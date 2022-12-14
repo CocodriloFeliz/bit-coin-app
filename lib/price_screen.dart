@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:bit_app/coin.dart';
-  List<String> list = ['One','Two','Three'];  
+
+List<String> list = ['One', 'Two', 'Three'];
 
 class PriceScreenState extends StatefulWidget {
   const PriceScreenState({super.key});
@@ -10,22 +12,28 @@ class PriceScreenState extends StatefulWidget {
 }
 
 class _PriceScreenStateState extends State<PriceScreenState> {
+  List<DropdownMenuItem<String>> coinList = [];
   String ddownValue = 'USD';
-  List<DropdownMenuItem> a= [];
-  List<DropdownMenuItem> ddownList(List<String> list){
-    for(String prop in list){
-      a.add(DropdownMenuItem(value: prop,child: Text(prop),));
+  List<DropdownMenuItem> ddownList(List<String> list) {
+    for (String prop in list) {
+      coinList.add(DropdownMenuItem(
+        value: prop,
+        child: Text(prop),
+      ));
     }
-    return a;
+    return coinList;
   }
-  @override
-  void initState() {
-    super.initState();
-    
-    ddownList(currenciesList);
+  List<Widget> cupertinoList(List<String> list){
+    List<Text> coinList = [];
+    for(String coin in list){
+      coinList.add(Text(coin));
+    }
+    return coinList;
   }
+
   @override
   Widget build(BuildContext context) {
+    ddownList(currenciesList);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Coin Ticker'),
@@ -52,22 +60,29 @@ class _PriceScreenStateState extends State<PriceScreenState> {
             ),
           ),
           Container(
-            height: 150.0,
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(bottom: 30.0),
-            color: Colors.lightBlue,
-            child: DropdownButton(
-              value: ddownValue,
-              items: a,
-              onChanged: (value) {
-                setState(() {
-                  ddownValue = value!;
-                });
-              },
-            ),
-          )
+              height: 150.0,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(bottom: 30.0),
+              color: Colors.lightBlue,
+              child: CupertinoPicker(
+                itemExtent: 30.0,
+                onSelectedItemChanged: (value) {
+                  print(value);
+                },
+                children: cupertinoList(currenciesList)
+              ))
         ],
       ),
     );
   }
 }
+
+// DropdownButton(
+//               value: ddownValue,
+//               items: coinList,
+//               onChanged: (value) {
+//                 setState(() {
+//                   ddownValue = value!;
+//                 });
+//               },
+//             ),
